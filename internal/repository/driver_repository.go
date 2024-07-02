@@ -16,3 +16,11 @@ func NewDriverRepository(db *sql.DB) *DriverRepository {
 		db: db,
 	}
 }
+
+func (dr *DriverRepository) GetSchool() {
+
+}
+
+func (dr *DriverRepository) GetSponsors() {
+
+}
