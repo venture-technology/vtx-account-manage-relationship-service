@@ -29,7 +29,7 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 		if school == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "The param 'school' not found"})
 		}
-	}, ct.IsSchool)
+	}, ct.IsSchoolArePartner)
 }
 
 func (ct *DriverController) GetSchool(c *gin.Context) {
@@ -39,6 +39,6 @@ func (ct *DriverController) GetSponsor(c *gin.Context) {
 
 }
 
-func (ct *DriverController) IsSchool(c *gin.Context) {
+func (ct *DriverController) IsSchoolArePartner(c *gin.Context) {
 
 }

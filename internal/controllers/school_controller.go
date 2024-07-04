@@ -29,7 +29,7 @@ func (ct *SchoolController) RegisterRoutes(router *gin.Engine) {
 		if driver == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"message": "The param 'driver' not found"})
 		}
-	}, ct.IsDriver)
+	}, ct.IsDriverAreSponsor)
 
 }
 
@@ -37,4 +37,4 @@ func (ct *SchoolController) GetDriver(c *gin.Context) {}
 
 func (ct *SchoolController) GetSponsor(c *gin.Context) {}
 
-func (ct *SchoolController) IsDriver(c *gin.Context) {}
+func (ct *SchoolController) IsDriverAreSponsor(c *gin.Context) {}
