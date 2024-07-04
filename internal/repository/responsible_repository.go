@@ -18,3 +18,19 @@ func NewResponsibleRepository(db *sql.DB) *ResponsibleRepository {
 		db: db,
 	}
 }
+
+func (rr *ResponsibleRepository) CreateSponsor() {
+
+}
+
+func (rr *ResponsibleRepository) GetPartners() {
+
+}
+
+func (rr *ResponsibleRepository) FindAllDriverAtSchool() {
+
+}
+
+func (rr *ResponsibleRepository) BreachSponsor() {
+
+}
