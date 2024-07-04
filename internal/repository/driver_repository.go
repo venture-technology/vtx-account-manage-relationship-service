@@ -1,10 +1,15 @@
 package repository
 
-import "database/sql"
+import (
+	"context"
+	"database/sql"
+
+	"github.com/venture-technology/vtx-account-manager/models"
+)
 
 type IDriverRepository interface {
-	GetSchool()
-	GetSponsors()
+	GetSchool(ctx context.Context, cnh *string) ([]models.School, error)
+	GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error)
 }
 
 type DriverRepository struct {
@@ -17,10 +22,14 @@ func NewDriverRepository(db *sql.DB) *DriverRepository {
 	}
 }
 
-func (dr *DriverRepository) GetSchool() {
+func (dr *DriverRepository) GetSchool(ctx context.Context, cnh *string) ([]models.School, error) {
+
+	return nil, nil
 
 }
 
-func (dr *DriverRepository) GetSponsors() {
+func (dr *DriverRepository) GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error) {
+
+	return nil, nil
 
 }
