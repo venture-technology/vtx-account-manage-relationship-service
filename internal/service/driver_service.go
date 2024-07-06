@@ -24,3 +24,7 @@ func (ds *DriverService) GetSchool(ctx context.Context, cnh *string) ([]models.S
 func (ds *DriverService) GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error) {
 	return ds.driverrepository.GetSponsors(ctx, cnpj)
 }
+
+func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
+	return ds.driverrepository.CreatePartner(ctx, handshake)
+}

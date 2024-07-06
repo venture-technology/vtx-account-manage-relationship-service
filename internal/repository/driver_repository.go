@@ -10,6 +10,7 @@ import (
 type IDriverRepository interface {
 	GetSchool(ctx context.Context, cnh *string) ([]models.School, error)
 	GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error)
+	CreatePartner(ctx context.Context, handshake *models.Handshake) error
 }
 
 type DriverRepository struct {
@@ -32,4 +33,8 @@ func (dr *DriverRepository) GetSponsors(ctx context.Context, cnpj *string) ([]mo
 
 	return nil, nil
 
+}
+
+func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
+	return nil
 }
