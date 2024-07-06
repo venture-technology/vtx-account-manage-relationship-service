@@ -34,21 +34,23 @@ func main() {
 		log.Fatalf("failed to execute migrations: %v", err)
 	}
 
-	driverRepository := repository.NewDriverRepository(db)
+	DriverRepository := repository.NewDriverRepository(db)
 	responsibleRepository := repository.NewResponsibleRepository(db)
 	schoolRepository := repository.NewSchoolRepository(db)
 
-	driverService := service.NewDriverService(driverRepository)
+	DriverService := service.NewDriverService(DriverRepository)
 	responsibleService := service.NewResponsibleService(responsibleRepository)
 	schoolService := service.NewSchoolService(schoolRepository)
 
-	driverController := controllers.NewDriverController(driverService)
+	DriverController := controllers.NewDriverController(DriverService)
 	responsibleController := controllers.NewResponsibleController(responsibleService)
 	schoolController := controllers.NewSchoolController(schoolService)
 
-	driverController.RegisterRoutes(router)
-	responsibleController.RegisterRoutes(router)
-	schoolController.RegisterRoutes(router)
+	log.Print(responsibleController, schoolController)
+
+	DriverController.RegisterRoutes(router)
+	// responsibleController.RegisterRoutes(router)
+	// schoolController.RegisterRoutes(router)
 
 	log.Printf("initing service: %s", config.Name)
 	router.Run(fmt.Sprintf(":%d", config.Server.Port))
