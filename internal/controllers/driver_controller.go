@@ -24,8 +24,8 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("api/v1/vtx-account-manager")
 
-	api.GET("/:cnh", ct.GetSchool) // para verificar se uma escola é parceira de um motorista
-	api.POST("/partner", ct.CreatePartner)
+	api.GET("/:cnh", ct.GetSchool)                                               // para verificar se uma escola é parceira de um motorista
+	api.POST("/partner", ct.CreatePartner)                                       // para criar uma parceria entre escola e motorista
 	api.GET("/:cnh/school", middleware.DriverMiddleware(), ct.GetPartners)       // para visualizar todas as suas escolas
 	api.GET("/:cnh/sponsor", middleware.DriverMiddleware(), ct.GetSponsor)       // para visualizar todos os sponsors
 	api.GET("/:cnh/shift", middleware.DriverMiddleware(), ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
