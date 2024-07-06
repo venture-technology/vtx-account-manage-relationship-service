@@ -9,7 +9,7 @@ import (
 type Config struct {
 	Name      string `yaml:"name"`
 	Database  Database
-	Server    Server `yaml:"server-invite"`
+	Server    Server `yaml:"server-account-manager"`
 	Cloud     Cloud
 	Cache     Cache
 	Messaging Messaging
