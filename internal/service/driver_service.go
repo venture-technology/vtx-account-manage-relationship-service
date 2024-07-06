@@ -17,8 +17,8 @@ func NewDriverService(repo repository.IDriverRepository) *DriverService {
 	}
 }
 
-func (ds *DriverService) GetSchool(ctx context.Context, cnh *string) ([]models.School, error) {
-	return ds.driverrepository.GetSchool(ctx, cnh)
+func (ds *DriverService) GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Handshake, error) {
+	return ds.driverrepository.GetSchool(ctx, cnh, cnpj)
 }
 
 func (ds *DriverService) GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error) {
