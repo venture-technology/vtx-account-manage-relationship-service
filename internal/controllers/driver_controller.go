@@ -24,10 +24,11 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("api/v1/vtx-account-manager")
 
+	api.GET("/:cnh", ct.GetSchool) // para verificar se uma escola é parceira de um motorista
 	api.POST("/partner", ct.CreatePartner)
-	api.GET("/:cnh/school", middleware.DriverMiddleware(), ct.GetPartners) // para visualizar todas as suas escolas
-	api.GET("/:cnh/sponsor", middleware.DriverMiddleware(), ct.GetSponsor) // para visualizar todos os sponsors
-	api.GET("/:cnh", ct.GetSchool)
+	api.GET("/:cnh/school", middleware.DriverMiddleware(), ct.GetPartners)       // para visualizar todas as suas escolas
+	api.GET("/:cnh/sponsor", middleware.DriverMiddleware(), ct.GetSponsor)       // para visualizar todos os sponsors
+	api.GET("/:cnh/shift", middleware.DriverMiddleware(), ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
 }
 
 func (ct *DriverController) CreatePartner(c *gin.Context) {
@@ -94,6 +95,26 @@ func (ct *DriverController) GetSponsor(c *gin.Context) {
 	cnh := c.Param("cnh")
 
 	sponsors, err := ct.driverservice.GetSponsors(c, &cnh)
+	if err != nil {
+		log.Printf("error while found sponsors: %s", err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "sponsors don't found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, sponsors)
+
+}
+
+func (ct *DriverController) GetSponsorsByShift(c *gin.Context) {
+
+	shift := c.Query("shift")
+	if shift == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "The param 'shift' not found"})
+	}
+
+	cnh := c.Param("cnh")
+
+	sponsors, err := ct.driverservice.GetSponsorsByShift(c, &cnh, &shift)
 	if err != nil {
 		log.Printf("error while found sponsors: %s", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "sponsors don't found"})

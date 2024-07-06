@@ -32,3 +32,7 @@ func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Ha
 func (ds *DriverService) GetPartners(ctx context.Context, cnh *string) ([]models.Handshake, error) {
 	return ds.driverrepository.GetPartners(ctx, cnh)
 }
+
+func (ds *DriverService) GetSponsorsByShift(ctx context.Context, cnh, shift *string) ([]models.Sponsor, error) {
+	return ds.driverrepository.GetSponsorsByShift(ctx, cnh, shift)
+}
