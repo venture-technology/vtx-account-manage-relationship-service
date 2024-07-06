@@ -1,14 +1,18 @@
 package models
 
+import "time"
+
 type Sponsor struct {
-	ID          int         `json:"id"`
-	Driver      Driver      `json:"driver"`
-	School      School      `json:"school"`
-	Responsible Responsible `json:"responsible"`
+	Record    int       `json:"record"`
+	Driver    Driver    `json:"driver"`
+	School    School    `json:"school"`
+	Child     Child     `json:"child"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type Handshake struct {
-	ID     int    `json:"id"`
-	Driver Driver `json:"driver"`
-	School School `json:"school"`
+	Record    int       `json:"record"`
+	Driver    Driver    `json:"driver"`
+	School    School    `json:"school"`
+	CreatedAt time.Time `json:"created_at"`
 }
