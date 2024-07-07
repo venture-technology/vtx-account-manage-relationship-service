@@ -7,6 +7,7 @@ type Responsible struct {
 	Street     string `json:"street"`
 	Number     int    `json:"int"`
 	Complement string `json:"complement"`
+	ZIP        string `json:"zip"`
 }
 
 type Child struct {
