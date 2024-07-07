@@ -103,7 +103,7 @@ func (dr *DriverRepository) GetSponsors(ctx context.Context, cnh *string) ([]mod
 
 func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
 
-	sqlQuery := `INSERT INTO parners (name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	sqlQuery := `INSERT INTO partners (name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
 	_, err := dr.db.Exec(sqlQuery, handshake.Driver.Name, handshake.Driver.CNH, handshake.Driver.Email, handshake.School.Name, handshake.School.CNPJ, handshake.School.Email)
 
