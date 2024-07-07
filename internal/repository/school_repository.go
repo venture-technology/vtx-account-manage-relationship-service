@@ -8,8 +8,9 @@ import (
 )
 
 type ISchoolRepository interface {
-	GetDriver(ctx context.Context, cnpj *string) ([]models.Driver, error)
+	GetDriver(ctx context.Context, cnpj *string) ([]models.Handshake, error)
 	GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error)
+	DeletePartner(ctx context.Context, cnh *string) error
 }
 
 type SchoolRepository struct {
@@ -22,7 +23,7 @@ func NewSchoolRepository(db *sql.DB) *SchoolRepository {
 	}
 }
 
-func (sr *SchoolRepository) GetDriver(ctx context.Context, cnpj *string) ([]models.Driver, error) {
+func (sr *SchoolRepository) GetDriver(ctx context.Context, cnpj *string) ([]models.Handshake, error) {
 
 	return nil, nil
 
@@ -31,5 +32,11 @@ func (sr *SchoolRepository) GetDriver(ctx context.Context, cnpj *string) ([]mode
 func (sr *SchoolRepository) GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error) {
 
 	return nil, nil
+
+}
+
+func (sr *SchoolRepository) DeletePartner(ctx context.Context, cnh *string) error {
+
+	return nil
 
 }
