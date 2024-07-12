@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/venture-technology/vtx-account-manager/internal/middleware"
 	"github.com/venture-technology/vtx-account-manager/internal/server"
 	"github.com/venture-technology/vtx-account-manager/internal/service"
 	"github.com/venture-technology/vtx-account-manager/models"
@@ -25,10 +24,10 @@ func NewResponsibleController(responsibleservice *service.ResponsibleService) *R
 func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("vtx-account-manager/api/v1")
 
-	api.GET("/school/:cnpj/driver", middleware.ResponsibleMiddleware(), ct.SearchDriversInSchool) // para encontrar motoristas da escola
-	api.POST("/sponsor", middleware.ResponsibleMiddleware(), ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
-	api.DELETE("/sponsor/:record", middleware.ResponsibleMiddleware(), ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
-	api.GET("/sponsor/:cpf", middleware.ResponsibleMiddleware(), ct.GetPartners)                  // para visualizar todos os motoristas
+	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
+	api.POST("/sponsor", ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
+	api.DELETE("/sponsor/:record", ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
+	api.GET("/sponsor/:cpf", ct.GetPartners)                  // para visualizar todos os motoristas
 }
 
 func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
