@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/venture-technology/vtx-account-manager/internal/middleware"
 	"github.com/venture-technology/vtx-account-manager/internal/server"
 	"github.com/venture-technology/vtx-account-manager/internal/service"
 	"github.com/venture-technology/vtx-account-manager/models"
@@ -25,11 +24,11 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("api/v1/vtx-account-manager")
 
-	api.GET("/:cnh", ct.GetSchool)                                               // para verificar se uma escola é parceira de um motorista
-	api.POST("/partner", ct.CreatePartner)                                       // para criar uma parceria entre escola e motorista
-	api.GET("/:cnh/school", middleware.DriverMiddleware(), ct.GetPartners)       // para visualizar todas as suas escolas
-	api.GET("/:cnh/sponsor", middleware.DriverMiddleware(), ct.GetSponsor)       // para visualizar todos os sponsors
-	api.GET("/:cnh/shift", middleware.DriverMiddleware(), ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
+	api.GET("/:cnh", ct.GetSchool)                // para verificar se uma escola é parceira de um motorista
+	api.POST("/partner", ct.CreatePartner)        // para criar uma parceria entre escola e motorista
+	api.GET("/:cnh/school", ct.GetPartners)       // para visualizar todas as suas escolas
+	api.GET("/:cnh/sponsor", ct.GetSponsor)       // para visualizar todos os sponsors
+	api.GET("/:cnh/shift", ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
 }
 
 func (ct *DriverController) CreatePartner(c *gin.Context) {
