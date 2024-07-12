@@ -3,9 +3,9 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/venture-technology/vtx-account-manager/internal/middleware"
 	"github.com/venture-technology/vtx-account-manager/internal/server"
 	"github.com/venture-technology/vtx-account-manager/internal/service"
 	"github.com/venture-technology/vtx-account-manager/models"
@@ -24,10 +24,10 @@ func NewResponsibleController(responsibleservice *service.ResponsibleService) *R
 func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("vtx-account-manager/api/v1")
 
-	api.GET("/school/:cnpj/driver", middleware.ResponsibleMiddleware(), ct.SearchDriversInSchool) // para encontrar motoristas da escola
-	api.POST("/sponsor", middleware.ResponsibleMiddleware(), ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
-	api.DELETE("/sponsor", middleware.ResponsibleMiddleware(), ct.BreachSponsor)                  // para quebrar um contrato com o motorista e escola
-	api.GET("/sponsor", middleware.ResponsibleMiddleware(), ct.GetSponsors)                       // para visualizar todos os motoristas
+	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
+	api.POST("/sponsor", ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
+	api.DELETE("/sponsor/:record", ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
+	api.GET("/sponsor/:cpf", ct.GetPartners)                  // para visualizar todos os motoristas
 }
 
 func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
@@ -52,14 +52,50 @@ func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
 
 }
 
-func (ct *ResponsibleController) GetSponsors(c *gin.Context) {
+func (ct *ResponsibleController) GetPartners(c *gin.Context) {
+
+	cpf := c.Param("cpf")
+
+	partners, err := ct.responsibleservice.GetPartners(c, &cpf)
+
+	if err != nil {
+		log.Printf("error to find partners: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, partners)
 
 }
 
 func (ct *ResponsibleController) BreachSponsor(c *gin.Context) {
 
+	record, _ := strconv.Atoi(c.Param("record"))
+
+	err := ct.responsibleservice.BreachSponsor(c, &record)
+
+	if err != nil {
+		log.Printf("error to breach sponsor: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "deleted with successfully"})
+
 }
 
 func (ct *ResponsibleController) SearchDriversInSchool(c *gin.Context) {
+
+	cnpj := c.Param("cnpj")
+
+	drivers, err := ct.responsibleservice.FindAllDriverAtSchool(c, &cnpj)
+
+	if err != nil {
+		log.Printf("error to find drivers at the school: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, drivers)
 
 }

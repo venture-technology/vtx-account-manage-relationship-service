@@ -1,10 +1,11 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/venture-technology/vtx-account-manager/internal/middleware"
+	"github.com/venture-technology/vtx-account-manager/internal/server"
 	"github.com/venture-technology/vtx-account-manager/internal/service"
 )
 
@@ -22,19 +23,39 @@ func (ct *SchoolController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("api/v1/vtx-account-manager")
 
-	api.GET("/driver", middleware.SchoolMiddleware(), ct.GetDriver)   // para visualizar todos seus motoristas
-	api.GET("/sponsor", middleware.SchoolMiddleware(), ct.GetSponsor) // para visualizar todos os sponsors
-	api.GET(":cnpj/school", func(c *gin.Context) {
-		driver := c.Query("driver")
-		if driver == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"message": "The param 'driver' not found"})
-		}
-	}, ct.IsDriverAreSponsor)
+	api.GET("/:cnpj/driver", ct.GetDriver)   // para visualizar todos seus motoristas
+	api.GET("/:cnpj/sponsor", ct.GetSponsor) // para visualizar todos os sponsors
 
 }
 
-func (ct *SchoolController) GetDriver(c *gin.Context) {}
+func (ct *SchoolController) GetDriver(c *gin.Context) {
 
-func (ct *SchoolController) GetSponsor(c *gin.Context) {}
+	cnpj := c.Param("cnpj")
 
-func (ct *SchoolController) IsDriverAreSponsor(c *gin.Context) {}
+	drivers, err := ct.schoolservice.GetDriver(c, &cnpj)
+
+	if err != nil {
+		log.Printf("error to find drivers: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, drivers)
+
+}
+
+func (ct *SchoolController) GetSponsor(c *gin.Context) {
+
+	cnpj := c.Param("cnpj")
+
+	sponsors, err := ct.schoolservice.GetSponsors(c, &cnpj)
+
+	if err != nil {
+		log.Printf("error to find sponsors: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, sponsors)
+
+}

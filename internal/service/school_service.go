@@ -21,6 +21,10 @@ func (ss *SchoolService) GetDriver(ctx context.Context, cnpj *string) ([]models.
 	return ss.schoolrepository.GetDriver(ctx, cnpj)
 }
 
-func (ss *SchoolService) GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error) {
-	return ss.schoolrepository.GetSponsors(ctx, cnh)
+func (ss *SchoolService) GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error) {
+	return ss.schoolrepository.GetSponsors(ctx, cnpj)
+}
+
+func (ss *SchoolService) DeletePartner(ctx context.Context, cnh *string) error {
+	return ss.schoolrepository.DeletePartner(ctx, cnh)
 }
