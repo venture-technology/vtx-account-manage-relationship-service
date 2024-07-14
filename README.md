@@ -1,4 +1,7 @@
-	/get/schools -> ms de escola
+
+ todo microserviço deve possuir uma /autoexplicativa
+ 
+ /get/schools -> ms de escola
 responsible
 
 	/delete/child/school/driver (pra cancelar com o motorista)
