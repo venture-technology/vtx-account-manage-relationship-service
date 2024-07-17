@@ -21,19 +21,19 @@ func NewSchoolController(schoolservice *service.SchoolService) *SchoolController
 
 func (ct *SchoolController) RegisterRoutes(router *gin.Engine) {
 
-	api := router.Group("vtx-account-manager/api/v1")
+	api := router.Group("vtx-account-manager/api/v1/school")
 
-	api.GET("/:cnpj/driver", ct.GetDriver)                 // para visualizar todos seus motoristas
+	api.GET("/:cnpj/driver", ct.GetAllDriversToSchool)     // para visualizar todos seus motoristas
 	api.GET("/:cnpj/sponsor", ct.GetSponsor)               // para visualizar todos os sponsors
 	api.DELETE("/:cnpj/sponsor/:record", ct.DeleteSponsor) // para deletar uma parceria
 
 }
 
-func (ct *SchoolController) GetDriver(c *gin.Context) {
+func (ct *SchoolController) GetAllDriversToSchool(c *gin.Context) {
 
 	cnpj := c.Param("cnpj")
 
-	drivers, err := ct.schoolservice.GetDriver(c, &cnpj)
+	drivers, err := ct.schoolservice.GetAllDriversToSchool(c, &cnpj)
 
 	if err != nil {
 		log.Printf("error to find drivers: %s", err.Error())
