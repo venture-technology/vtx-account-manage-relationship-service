@@ -10,7 +10,7 @@ import (
 type ISchoolRepository interface {
 	GetDriver(ctx context.Context, cnpj *string) ([]models.Handshake, error)
 	GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error)
-	DeletePartner(ctx context.Context, cnh *string) error
+	DeletePartner(ctx context.Context, cnpj, cnh *string) error
 }
 
 type SchoolRepository struct {
@@ -112,7 +112,7 @@ func (sr *SchoolRepository) GetSponsors(ctx context.Context, cnpj *string) ([]mo
 
 }
 
-func (sr *SchoolRepository) DeletePartner(ctx context.Context, cnh *string) error {
+func (sr *SchoolRepository) DeletePartner(ctx context.Context, cnpj, cnh *string) error {
 
 	tx, err := sr.db.Begin()
 	if err != nil {
@@ -128,7 +128,7 @@ func (sr *SchoolRepository) DeletePartner(ctx context.Context, cnh *string) erro
 			err = tx.Commit()
 		}
 	}()
-	_, err = tx.Exec("DELETE FROM partners WHERE cnh_driver = $1", cnh)
+	_, err = tx.Exec("DELETE FROM partners WHERE cnh_driver = $1 AND cnpj_school = $2", cnh)
 	return err
 
 }

@@ -25,6 +25,6 @@ func (ss *SchoolService) GetSponsors(ctx context.Context, cnpj *string) ([]model
 	return ss.schoolrepository.GetSponsors(ctx, cnpj)
 }
 
-func (ss *SchoolService) DeletePartner(ctx context.Context, cnh *string) error {
-	return ss.schoolrepository.DeletePartner(ctx, cnh)
+func (ss *SchoolService) DeletePartner(ctx context.Context, cnpj, cnh *string) error {
+	return ss.schoolrepository.DeletePartner(ctx, cnpj, cnh)
 }
