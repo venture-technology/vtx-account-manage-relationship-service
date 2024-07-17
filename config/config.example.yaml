@@ -1,0 +1,26 @@
+name: venture
+development: true
+
+server-account-manager:
+  host-vtx-account-manager: "localhost"
+  port-vtx-account-manager: 7777
+  secret-vtx-account-manager: "secret"
+
+database:
+  dbuser: "userdb"
+  dbport: 5432
+  dbhost: "hostdb"
+  dbpassword: "passwordb"
+  dbname: "venture_staging"
+  schema: "database/schema.sql"
+
+cloud:
+  region: "us-east-1"
+  accesskey: "accesskey"
+  secretkey: "secretkey"
+  token: ""
+  source: "emailsource"
+
+messaging:
+  broker: "brokerip"
+  topic: "topicname"

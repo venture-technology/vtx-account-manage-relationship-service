@@ -1,5 +1,3 @@
-DROP TABLE partners;
-
 -- Tabela de school-drivers
 CREATE TABLE IF NOT EXISTS partners (
     record SERIAL PRIMARY KEY,
@@ -9,7 +7,7 @@ CREATE TABLE IF NOT EXISTS partners (
     name_driver VARCHAR(100) NOT NULL,
     cnh_driver VARCHAR(14),
     email_driver VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de account-manager
@@ -31,5 +29,5 @@ CREATE TABLE IF NOT EXISTS sponsors (
     name_child VARCHAR(50) NOT NULL,
     rg_child VARCHAR(10) NOT NULL,
     shift VARCHAR(14) NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

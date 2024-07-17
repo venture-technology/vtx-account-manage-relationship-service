@@ -22,7 +22,7 @@ func NewResponsibleController(responsibleservice *service.ResponsibleService) *R
 }
 
 func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
-	api := router.Group("vtx-account-manager/api/v1")
+	api := router.Group("vtx-account-manager/api/v1/responsible")
 
 	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
 	api.POST("/sponsor", ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola

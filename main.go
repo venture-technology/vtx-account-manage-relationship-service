@@ -50,7 +50,7 @@ func main() {
 
 	DriverController.RegisterRoutes(router)
 	// responsibleController.RegisterRoutes(router)
-	// schoolController.RegisterRoutes(router)
+	schoolController.RegisterRoutes(router)
 
 	log.Printf("initing service: %s", config.Name)
 	router.Run(fmt.Sprintf(":%d", config.Server.Port))
