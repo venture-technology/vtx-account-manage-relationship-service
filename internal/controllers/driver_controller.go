@@ -22,7 +22,7 @@ func NewDriverController(driverservice *service.DriverService) *DriverController
 
 func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 
-	api := router.Group("api/v1/vtx-account-manager")
+	api := router.Group("vtx-account-manager/api/v1")
 
 	api.GET("/:cnh", ct.GetSchool)                // para verificar se uma escola é parceira de um motorista
 	api.POST("/partner", ct.CreatePartner)        // para criar uma parceria entre escola e motorista

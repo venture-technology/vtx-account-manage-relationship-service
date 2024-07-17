@@ -21,7 +21,7 @@ func NewSchoolController(schoolservice *service.SchoolService) *SchoolController
 
 func (ct *SchoolController) RegisterRoutes(router *gin.Engine) {
 
-	api := router.Group("api/v1/vtx-account-manager")
+	api := router.Group("vtx-account-manager/api/v1")
 
 	api.GET("/:cnpj/driver", ct.GetDriver)   // para visualizar todos seus motoristas
 	api.GET("/:cnpj/sponsor", ct.GetSponsor) // para visualizar todos os sponsors
