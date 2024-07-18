@@ -24,11 +24,18 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("vtx-account-manager/api/v1/driver")
 
+	api.GET("/ping", ct.Ping)
 	api.GET("/:cnh", ct.GetSchool)                // para verificar se uma escola é parceira de um motorista
 	api.POST("/partner", ct.CreatePartner)        // para criar uma parceria entre escola e motorista
 	api.GET("/:cnh/school", ct.GetPartners)       // para visualizar todas as suas escolas
 	api.GET("/:cnh/sponsor", ct.GetSponsor)       // para visualizar todos os sponsors
 	api.GET("/:cnh/shift", ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
+}
+
+func (ct *DriverController) Ping(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"ping": "pong",
+	})
 }
 
 func (ct *DriverController) CreatePartner(c *gin.Context) {
