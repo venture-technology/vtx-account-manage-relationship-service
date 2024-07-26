@@ -24,3 +24,7 @@ cloud:
 messaging:
   broker: "brokerip"
   topic: "topicname"
+
+google-cloud-secret:
+  apikey: "your-api-key"
+  endpoint: "https://maps.googleapis.com/maps/api/distancematrix/json"
