@@ -16,3 +16,12 @@ type Handshake struct {
 	School    School    `json:"school"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type EmploymentContract struct {
+	Record      int         `json:"record"`
+	Driver      Driver      `json:"driver"`
+	School      School      `json:"school"`
+	Responsible Responsible `json:"responsible"`
+	Amount      int64       `json:"amount"`
+	Months      int64       `json:"months"`
+}
