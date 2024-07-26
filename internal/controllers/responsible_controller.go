@@ -26,8 +26,8 @@ func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 
 	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
 	api.POST("/sponsor", ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
-	api.DELETE("/sponsor/:record", ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
 	api.GET("/sponsor/:cpf", ct.GetPartners)                  // para visualizar todos os motoristas
+	api.DELETE("/sponsor/:record", ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
 }
 
 func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
