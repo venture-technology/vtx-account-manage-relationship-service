@@ -8,6 +8,7 @@ type Responsible struct {
 	Number     string `json:"number"`
 	Complement string `json:"complement"`
 	ZIP        string `json:"zip"`
+	CustomerId string `json:"customer_id"`
 }
 
 type Child struct {
