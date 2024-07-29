@@ -11,7 +11,7 @@ type IDriverRepository interface {
 	GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Partner, error)
 	GetContracts(ctx context.Context, cnh *string) ([]models.Contract, error)
 	GetContractsByShift(ctx context.Context, cnh, shift *string) ([]models.Contract, error)
-	CreatePartner(ctx context.Context, handshake *models.Partner) error
+	CreatePartner(ctx context.Context, partner *models.Partner) error
 	GetPartners(ctx context.Context, cnh *string) ([]models.Partner, error)
 }
 
@@ -101,11 +101,11 @@ func (dr *DriverRepository) GetContracts(ctx context.Context, cnh *string) ([]mo
 
 }
 
-func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models.Partner) error {
+func (dr *DriverRepository) CreatePartner(ctx context.Context, partner *models.Partner) error {
 
 	sqlQuery := `INSERT INTO partners (name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school) VALUES ($1, $2, $3, $4, $5, $6)`
 
-	_, err := dr.db.Exec(sqlQuery, handshake.Driver.Name, handshake.Driver.CNH, handshake.Driver.Email, handshake.School.Name, handshake.School.CNPJ, handshake.School.Email)
+	_, err := dr.db.Exec(sqlQuery, partner.Driver.Name, partner.Driver.CNH, partner.Driver.Email, partner.School.Name, partner.School.CNPJ, partner.School.Email)
 
 	return err
 }

@@ -25,8 +25,8 @@ func (ds *DriverService) GetContracts(ctx context.Context, cnh *string) ([]model
 	return ds.driverrepository.GetContracts(ctx, cnh)
 }
 
-func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Partner) error {
-	return ds.driverrepository.CreatePartner(ctx, handshake)
+func (ds *DriverService) CreatePartner(ctx context.Context, partner *models.Partner) error {
+	return ds.driverrepository.CreatePartner(ctx, partner)
 }
 
 func (ds *DriverService) GetPartners(ctx context.Context, cnh *string) ([]models.Partner, error) {

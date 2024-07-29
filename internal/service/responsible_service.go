@@ -17,8 +17,8 @@ func NewResponsibleService(repo repository.IResponsibleRepository) *ResponsibleS
 	}
 }
 
-func (rs *ResponsibleService) CreateContract(ctx context.Context, sponsor *models.Contract) error {
-	return rs.responsiblerepository.CreateContract(ctx, sponsor)
+func (rs *ResponsibleService) CreateContract(ctx context.Context, contract *models.Contract) error {
+	return rs.responsiblerepository.CreateContract(ctx, contract)
 }
 
 func (rs *ResponsibleService) GetPartners(ctx context.Context, cpf *string) ([]models.Contract, error) {
