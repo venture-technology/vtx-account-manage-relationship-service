@@ -9,9 +9,9 @@ import (
 
 type IResponsibleRepository interface {
 	FindAllDriverAtSchool(ctx context.Context, cnpj *string) ([]models.Driver, error)
-	CreateSponsor(ctx context.Context, sponsor *models.Sponsor) error
-	GetPartners(ctx context.Context, cpf *string) ([]models.Sponsor, error)
-	BreachSponsor(ctx context.Context, record *int) error
+	CreateContract(ctx context.Context, contract *models.Contract) error
+	GetPartners(ctx context.Context, cpf *string) ([]models.Contract, error)
+	BreachContract(ctx context.Context, record *int) error
 }
 
 type ResponsibleRepository struct {
@@ -24,9 +24,9 @@ func NewResponsibleRepository(db *sql.DB) *ResponsibleRepository {
 	}
 }
 
-func (rr *ResponsibleRepository) CreateSponsor(ctx context.Context, sponsor *models.Sponsor) error {
+func (rr *ResponsibleRepository) CreateContract(ctx context.Context, contract *models.Contract) error {
 
-	sqlQuery := `INSERT INTO sponsors (
+	sqlQuery := `INSERT INTO contracts (
 		name_driver, 
 		cnh_driver, 
 		email_driver, 
@@ -48,29 +48,29 @@ func (rr *ResponsibleRepository) CreateSponsor(ctx context.Context, sponsor *mod
 	VALUES ($1, $2. $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`
 
 	_, err := rr.db.Exec(sqlQuery,
-		sponsor.Driver.Name,
-		sponsor.Driver.CNH,
-		sponsor.Driver.Email,
-		sponsor.School.Name,
-		sponsor.School.CNPJ,
-		sponsor.School.Email,
-		sponsor.Child.Responsible.Name,
-		sponsor.Child.Responsible.CPF,
-		sponsor.Child.Responsible.Email,
-		sponsor.Child.Responsible.Street,
-		sponsor.Child.Responsible.Complement,
-		sponsor.Child.Responsible.ZIP,
-		sponsor.Child.Name,
-		sponsor.Child.RG,
-		sponsor.Child.Shift,
-		sponsor.CreatedAt,
+		contract.Driver.Name,
+		contract.Driver.CNH,
+		contract.Driver.Email,
+		contract.School.Name,
+		contract.School.CNPJ,
+		contract.School.Email,
+		contract.Child.Responsible.Name,
+		contract.Child.Responsible.CPF,
+		contract.Child.Responsible.Email,
+		contract.Child.Responsible.Street,
+		contract.Child.Responsible.Complement,
+		contract.Child.Responsible.ZIP,
+		contract.Child.Name,
+		contract.Child.RG,
+		contract.Child.Shift,
+		contract.CreatedAt,
 	)
 
 	return err
 
 }
 
-func (rr *ResponsibleRepository) GetPartners(ctx context.Context, cpf *string) ([]models.Sponsor, error) {
+func (rr *ResponsibleRepository) GetPartners(ctx context.Context, cpf *string) ([]models.Contract, error) {
 
 	sqlQuery := `SELECT 
 		name_driver, 
@@ -89,7 +89,7 @@ func (rr *ResponsibleRepository) GetPartners(ctx context.Context, cpf *string) (
 		name_child, 
 		rg_child, 
 		shift, 
-		created_at FROM sponsors WHERE cpf_responsible = $1`
+		created_at FROM contracts WHERE cpf_responsible = $1`
 
 	rows, err := rr.db.Query(sqlQuery, cpf)
 
@@ -98,42 +98,42 @@ func (rr *ResponsibleRepository) GetPartners(ctx context.Context, cpf *string) (
 	}
 	defer rows.Close()
 
-	var sponsors []models.Sponsor
+	var contracts []models.Contract
 
 	for rows.Next() {
-		var sponsor models.Sponsor
+		var contract models.Contract
 
 		err := rows.Scan(
-			&sponsor.Driver.Name,
-			&sponsor.Driver.CNH,
-			&sponsor.Driver.Email,
-			&sponsor.School.Name,
-			&sponsor.School.CNPJ,
-			&sponsor.School.Email,
-			&sponsor.Child.Responsible.Name,
-			&sponsor.Child.Responsible.CPF,
-			&sponsor.Child.Responsible.Email,
-			&sponsor.Child.Responsible.Street,
-			&sponsor.Child.Responsible.Complement,
-			&sponsor.Child.Responsible.ZIP,
-			&sponsor.Child.Name,
-			&sponsor.Child.RG,
-			&sponsor.Child.Shift,
-			&sponsor.CreatedAt,
+			&contract.Driver.Name,
+			&contract.Driver.CNH,
+			&contract.Driver.Email,
+			&contract.School.Name,
+			&contract.School.CNPJ,
+			&contract.School.Email,
+			&contract.Child.Responsible.Name,
+			&contract.Child.Responsible.CPF,
+			&contract.Child.Responsible.Email,
+			&contract.Child.Responsible.Street,
+			&contract.Child.Responsible.Complement,
+			&contract.Child.Responsible.ZIP,
+			&contract.Child.Name,
+			&contract.Child.RG,
+			&contract.Child.Shift,
+			&contract.CreatedAt,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		sponsors = append(sponsors, sponsor)
+		contracts = append(contracts, contract)
 	}
 
 	if err := rows.Scan(); err != nil {
 		return nil, err
 	}
 
-	return sponsors, nil
+	return contracts, nil
 
 }
 
@@ -174,7 +174,7 @@ func (rr *ResponsibleRepository) FindAllDriverAtSchool(ctx context.Context, cnpj
 
 }
 
-func (rr *ResponsibleRepository) BreachSponsor(ctx context.Context, record *int) error {
+func (rr *ResponsibleRepository) BreachContract(ctx context.Context, record *int) error {
 
 	tx, err := rr.db.Begin()
 	if err != nil {
@@ -190,7 +190,7 @@ func (rr *ResponsibleRepository) BreachSponsor(ctx context.Context, record *int)
 			err = tx.Commit()
 		}
 	}()
-	_, err = tx.Exec("DELETE FROM sponsors WHERE record = $1", record)
+	_, err = tx.Exec("DELETE FROM contracts WHERE record = $1", record)
 	return err
 
 }

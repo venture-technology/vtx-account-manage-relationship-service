@@ -25,14 +25,14 @@ func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("vtx-account-manager/api/v1/responsible")
 
 	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
-	api.POST("/sponsor", ct.CreateSponsor)                    // para fechar um contrato com o motorista e escola
-	api.GET("/sponsor/:cpf", ct.GetPartners)                  // para visualizar todos os motoristas
-	api.DELETE("/sponsor/:record", ct.BreachSponsor)          // para quebrar um contrato com o motorista e escola
+	api.POST("/contract", ct.CreateContract)                  // para fechar um contrato com o motorista e escola
+	api.GET("/contract/:cpf", ct.GetPartners)                 // para visualizar todos os motoristas
+	api.DELETE("/contract/:record", ct.BreachContract)        // para quebrar um contrato com o motorista e escola
 }
 
-func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
+func (ct *ResponsibleController) CreateContract(c *gin.Context) {
 
-	var input models.Sponsor
+	var input models.Contract
 
 	if err := c.BindJSON(&input); err != nil {
 		log.Printf("error to parsed body: %s", err.Error())
@@ -40,10 +40,10 @@ func (ct *ResponsibleController) CreateSponsor(c *gin.Context) {
 		return
 	}
 
-	err := ct.responsibleservice.CreateSponsor(c, &input)
+	err := ct.responsibleservice.CreateContract(c, &input)
 
 	if err != nil {
-		log.Printf("error to create sponsor: %s", err.Error())
+		log.Printf("error to create contract: %s", err.Error())
 		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
 		return
 	}
@@ -68,14 +68,14 @@ func (ct *ResponsibleController) GetPartners(c *gin.Context) {
 
 }
 
-func (ct *ResponsibleController) BreachSponsor(c *gin.Context) {
+func (ct *ResponsibleController) BreachContract(c *gin.Context) {
 
 	record, _ := strconv.Atoi(c.Param("record"))
 
-	err := ct.responsibleservice.BreachSponsor(c, &record)
+	err := ct.responsibleservice.BreachContract(c, &record)
 
 	if err != nil {
-		log.Printf("error to breach sponsor: %s", err.Error())
+		log.Printf("error to breach contract: %s", err.Error())
 		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
 		return
 	}

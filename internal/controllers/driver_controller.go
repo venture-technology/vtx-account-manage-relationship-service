@@ -25,11 +25,11 @@ func (ct *DriverController) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("vtx-account-manager/api/v1/driver")
 
 	api.GET("/ping", ct.Ping)
-	api.GET("/:cnh", ct.GetSchool)                // para verificar se uma escola é parceira de um motorista
-	api.POST("/partner", ct.CreatePartner)        // para criar uma parceria entre escola e motorista
-	api.GET("/:cnh/school", ct.GetPartners)       // para visualizar todas as suas escolas
-	api.GET("/:cnh/sponsor", ct.GetSponsor)       // para visualizar todos os sponsors
-	api.GET("/:cnh/shift", ct.GetSponsorsByShift) // para buscar todos os sponsors de acordo com o horário da escola
+	api.GET("/:cnh", ct.GetSchool)                 // para verificar se uma escola é parceira de um motorista
+	api.POST("/partner", ct.CreatePartner)         // para criar uma parceria entre escola e motorista
+	api.GET("/:cnh/school", ct.GetPartners)        // para visualizar todas as suas escolas
+	api.GET("/:cnh/contract", ct.GetContract)      // para visualizar todos os contracts
+	api.GET("/:cnh/shift", ct.GetContractsByShift) // para buscar todos os contracts de acordo com o horário da escola
 }
 
 func (ct *DriverController) Ping(c *gin.Context) {
@@ -97,22 +97,22 @@ func (ct *DriverController) GetSchool(c *gin.Context) {
 
 }
 
-func (ct *DriverController) GetSponsor(c *gin.Context) {
+func (ct *DriverController) GetContract(c *gin.Context) {
 
 	cnh := c.Param("cnh")
 
-	sponsors, err := ct.driverservice.GetSponsors(c, &cnh)
+	contracts, err := ct.driverservice.GetContracts(c, &cnh)
 	if err != nil {
-		log.Printf("error while found sponsors: %s", err.Error())
-		c.JSON(http.StatusBadRequest, server.NotFoundObjectErrorResponse("sponsor"))
+		log.Printf("error while found contracts: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.NotFoundObjectErrorResponse("contract"))
 		return
 	}
 
-	c.JSON(http.StatusOK, sponsors)
+	c.JSON(http.StatusOK, contracts)
 
 }
 
-func (ct *DriverController) GetSponsorsByShift(c *gin.Context) {
+func (ct *DriverController) GetContractsByShift(c *gin.Context) {
 
 	shift := c.Query("shift")
 	if shift == "" {
@@ -121,13 +121,13 @@ func (ct *DriverController) GetSponsorsByShift(c *gin.Context) {
 
 	cnh := c.Param("cnh")
 
-	sponsors, err := ct.driverservice.GetSponsorsByShift(c, &cnh, &shift)
+	contracts, err := ct.driverservice.GetContractsByShift(c, &cnh, &shift)
 	if err != nil {
-		log.Printf("error while found sponsors: %s", err.Error())
-		c.JSON(http.StatusBadRequest, server.NotFoundObjectErrorResponse("sponsor"))
+		log.Printf("error while found contracts: %s", err.Error())
+		c.JSON(http.StatusBadRequest, server.NotFoundObjectErrorResponse("contract"))
 		return
 	}
 
-	c.JSON(http.StatusOK, sponsors)
+	c.JSON(http.StatusOK, contracts)
 
 }

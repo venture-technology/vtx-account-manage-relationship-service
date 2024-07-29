@@ -21,8 +21,8 @@ func (ds *DriverService) GetSchool(ctx context.Context, cnh, cnpj *string) (*mod
 	return ds.driverrepository.GetSchool(ctx, cnh, cnpj)
 }
 
-func (ds *DriverService) GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error) {
-	return ds.driverrepository.GetSponsors(ctx, cnh)
+func (ds *DriverService) GetContracts(ctx context.Context, cnh *string) ([]models.Contract, error) {
+	return ds.driverrepository.GetContracts(ctx, cnh)
 }
 
 func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
@@ -33,6 +33,6 @@ func (ds *DriverService) GetPartners(ctx context.Context, cnh *string) ([]models
 	return ds.driverrepository.GetPartners(ctx, cnh)
 }
 
-func (ds *DriverService) GetSponsorsByShift(ctx context.Context, cnh, shift *string) ([]models.Sponsor, error) {
-	return ds.driverrepository.GetSponsorsByShift(ctx, cnh, shift)
+func (ds *DriverService) GetContractsByShift(ctx context.Context, cnh, shift *string) ([]models.Contract, error) {
+	return ds.driverrepository.GetContractsByShift(ctx, cnh, shift)
 }

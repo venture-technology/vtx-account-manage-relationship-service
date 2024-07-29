@@ -9,8 +9,8 @@ import (
 
 type IDriverRepository interface {
 	GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Handshake, error)
-	GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error)
-	GetSponsorsByShift(ctx context.Context, cnh, shift *string) ([]models.Sponsor, error)
+	GetContracts(ctx context.Context, cnh *string) ([]models.Contract, error)
+	GetContractsByShift(ctx context.Context, cnh, shift *string) ([]models.Contract, error)
 	CreatePartner(ctx context.Context, handshake *models.Handshake) error
 	GetPartners(ctx context.Context, cnh *string) ([]models.Handshake, error)
 }
@@ -50,9 +50,9 @@ func (dr *DriverRepository) GetSchool(ctx context.Context, cnh, cnpj *string) (*
 
 }
 
-func (dr *DriverRepository) GetSponsors(ctx context.Context, cnh *string) ([]models.Sponsor, error) {
+func (dr *DriverRepository) GetContracts(ctx context.Context, cnh *string) ([]models.Contract, error) {
 
-	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, name_responsible, cpf_responsible, email_responsible, street_responsible, number_responsible, zip_responsible, name_child, rg_child, shift, created_at FROM sponsors WHERE cnh_driver = $1`
+	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, name_responsible, cpf_responsible, email_responsible, street_responsible, number_responsible, zip_responsible, name_child, rg_child, shift, created_at FROM contracts WHERE cnh_driver = $1`
 
 	rows, err := dr.db.Query(sqlQuery, cnh)
 	if err != nil {
@@ -60,44 +60,44 @@ func (dr *DriverRepository) GetSponsors(ctx context.Context, cnh *string) ([]mod
 	}
 	defer rows.Close()
 
-	var sponsors []models.Sponsor
+	var contracts []models.Contract
 
 	for rows.Next() {
 
-		var sponsor models.Sponsor
+		var contract models.Contract
 
 		err := rows.Scan(
-			&sponsor.Record,
-			&sponsor.Driver.Name,
-			&sponsor.Driver.CNH,
-			&sponsor.Driver.Email,
-			&sponsor.School.Name,
-			&sponsor.School.CNPJ,
-			&sponsor.School.Email,
-			&sponsor.Child.Responsible.Name,
-			&sponsor.Child.Responsible.CPF,
-			&sponsor.Child.Responsible.Email,
-			&sponsor.Child.Responsible.Street,
-			&sponsor.Child.Responsible.Number,
-			&sponsor.Child.Responsible.Complement,
-			&sponsor.Child.Name,
-			&sponsor.Child.RG,
-			&sponsor.Child.Shift,
-			&sponsor.CreatedAt,
+			&contract.Record,
+			&contract.Driver.Name,
+			&contract.Driver.CNH,
+			&contract.Driver.Email,
+			&contract.School.Name,
+			&contract.School.CNPJ,
+			&contract.School.Email,
+			&contract.Child.Responsible.Name,
+			&contract.Child.Responsible.CPF,
+			&contract.Child.Responsible.Email,
+			&contract.Child.Responsible.Street,
+			&contract.Child.Responsible.Number,
+			&contract.Child.Responsible.Complement,
+			&contract.Child.Name,
+			&contract.Child.RG,
+			&contract.Child.Shift,
+			&contract.CreatedAt,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		sponsors = append(sponsors, sponsor)
+		contracts = append(contracts, contract)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return sponsors, nil
+	return contracts, nil
 
 }
 
@@ -148,9 +148,9 @@ func (dr *DriverRepository) GetPartners(ctx context.Context, cnh *string) ([]mod
 
 }
 
-func (dr *DriverRepository) GetSponsorsByShift(ctx context.Context, cnh, shift *string) ([]models.Sponsor, error) {
+func (dr *DriverRepository) GetContractsByShift(ctx context.Context, cnh, shift *string) ([]models.Contract, error) {
 
-	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, name_responsible, cpf_responsible, email_responsible, street_responsible, number_responsible, zip_responsible, name_child, rg_child, shift, created_at FROM sponsors WHERE cnh_driver = $1 AND shift = $2`
+	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, name_responsible, cpf_responsible, email_responsible, street_responsible, number_responsible, zip_responsible, name_child, rg_child, shift, created_at FROM contracts WHERE cnh_driver = $1 AND shift = $2`
 
 	rows, err := dr.db.Query(sqlQuery, cnh, shift)
 	if err != nil {
@@ -158,43 +158,43 @@ func (dr *DriverRepository) GetSponsorsByShift(ctx context.Context, cnh, shift *
 	}
 	defer rows.Close()
 
-	var sponsors []models.Sponsor
+	var contracts []models.Contract
 
 	for rows.Next() {
 
-		var sponsor models.Sponsor
+		var contract models.Contract
 
 		err := rows.Scan(
-			&sponsor.Record,
-			&sponsor.Driver.Name,
-			&sponsor.Driver.CNH,
-			&sponsor.Driver.Email,
-			&sponsor.School.Name,
-			&sponsor.School.CNPJ,
-			&sponsor.School.Email,
-			&sponsor.Child.Responsible.Name,
-			&sponsor.Child.Responsible.CPF,
-			&sponsor.Child.Responsible.Email,
-			&sponsor.Child.Responsible.Street,
-			&sponsor.Child.Responsible.Number,
-			&sponsor.Child.Responsible.Complement,
-			&sponsor.Child.Name,
-			&sponsor.Child.RG,
-			&sponsor.Child.Shift,
-			&sponsor.CreatedAt,
+			&contract.Record,
+			&contract.Driver.Name,
+			&contract.Driver.CNH,
+			&contract.Driver.Email,
+			&contract.School.Name,
+			&contract.School.CNPJ,
+			&contract.School.Email,
+			&contract.Child.Responsible.Name,
+			&contract.Child.Responsible.CPF,
+			&contract.Child.Responsible.Email,
+			&contract.Child.Responsible.Street,
+			&contract.Child.Responsible.Number,
+			&contract.Child.Responsible.Complement,
+			&contract.Child.Name,
+			&contract.Child.RG,
+			&contract.Child.Shift,
+			&contract.CreatedAt,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		sponsors = append(sponsors, sponsor)
+		contracts = append(contracts, contract)
 	}
 
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return sponsors, nil
+	return contracts, nil
 
 }

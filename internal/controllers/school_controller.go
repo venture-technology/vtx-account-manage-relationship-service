@@ -23,9 +23,9 @@ func (ct *SchoolController) RegisterRoutes(router *gin.Engine) {
 
 	api := router.Group("vtx-account-manager/api/v1/school")
 
-	api.GET("/:cnpj/driver", ct.GetAllDriversToSchool)     // para visualizar todos seus motoristas
-	api.GET("/:cnpj/sponsor", ct.GetSponsor)               // para visualizar todos os sponsors
-	api.DELETE("/:cnpj/sponsor/:record", ct.DeleteSponsor) // para deletar uma parceria
+	api.GET("/:cnpj/driver", ct.GetAllDriversToSchool)       // para visualizar todos seus motoristas
+	api.GET("/:cnpj/contract", ct.GetContract)               // para visualizar todos os contracts
+	api.DELETE("/:cnpj/contract/:record", ct.DeleteContract) // para deletar uma parceria
 
 }
 
@@ -45,28 +45,28 @@ func (ct *SchoolController) GetAllDriversToSchool(c *gin.Context) {
 
 }
 
-func (ct *SchoolController) GetSponsor(c *gin.Context) {
+func (ct *SchoolController) GetContract(c *gin.Context) {
 
 	cnpj := c.Param("cnpj")
 
-	sponsors, err := ct.schoolservice.GetSponsors(c, &cnpj)
+	contracts, err := ct.schoolservice.GetContracts(c, &cnpj)
 
 	if err != nil {
-		log.Printf("error to find sponsors: %s", err.Error())
+		log.Printf("error to find contracts: %s", err.Error())
 		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, sponsors)
+	c.JSON(http.StatusOK, contracts)
 
 }
 
-func (ct *SchoolController) DeleteSponsor(c *gin.Context) {
+func (ct *SchoolController) DeleteContract(c *gin.Context) {
 
 	cnpj := c.Param("cnpj")
 	cnh := c.Param("cnh")
 
-	// necessário verificar se eles não tem nenhum sponsor antes, portanto uma escola não pode encerrar contrato com o motorista se tiver alunos registrados.
+	// necessário verificar se eles não tem nenhum contract antes, portanto uma escola não pode encerrar contrato com o motorista se tiver alunos registrados.
 
 	err := ct.schoolservice.DeletePartner(c, &cnpj, &cnh)
 
