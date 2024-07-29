@@ -8,7 +8,7 @@ import (
 )
 
 type ISchoolRepository interface {
-	GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Handshake, error)
+	GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Partner, error)
 	GetContracts(ctx context.Context, cnpj *string) ([]models.Contract, error)
 	DeletePartner(ctx context.Context, cnpj, cnh *string) error
 }
@@ -23,7 +23,7 @@ func NewSchoolRepository(db *sql.DB) *SchoolRepository {
 	}
 }
 
-func (sr *SchoolRepository) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Handshake, error) {
+func (sr *SchoolRepository) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Partner, error) {
 
 	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, created_at FROM partners WHERE cnpj_school = $1`
 
@@ -33,10 +33,10 @@ func (sr *SchoolRepository) GetAllDriversToSchool(ctx context.Context, cnpj *str
 	}
 	defer rows.Close()
 
-	var partners []models.Handshake
+	var partners []models.Partner
 
 	for rows.Next() {
-		var partner models.Handshake
+		var partner models.Partner
 
 		err := rows.Scan(
 			&partner.Record,

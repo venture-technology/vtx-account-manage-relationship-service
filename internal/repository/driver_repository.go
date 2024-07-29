@@ -8,11 +8,11 @@ import (
 )
 
 type IDriverRepository interface {
-	GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Handshake, error)
+	GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Partner, error)
 	GetContracts(ctx context.Context, cnh *string) ([]models.Contract, error)
 	GetContractsByShift(ctx context.Context, cnh, shift *string) ([]models.Contract, error)
-	CreatePartner(ctx context.Context, handshake *models.Handshake) error
-	GetPartners(ctx context.Context, cnh *string) ([]models.Handshake, error)
+	CreatePartner(ctx context.Context, handshake *models.Partner) error
+	GetPartners(ctx context.Context, cnh *string) ([]models.Partner, error)
 }
 
 type DriverRepository struct {
@@ -25,11 +25,11 @@ func NewDriverRepository(db *sql.DB) *DriverRepository {
 	}
 }
 
-func (dr *DriverRepository) GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Handshake, error) {
+func (dr *DriverRepository) GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Partner, error) {
 
 	sqlQuery := `SELECT record, name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school, created_at FROM partners WHERE cnh_driver = $1 AND cnpj_school = $2 LIMIT 1`
 
-	var partner models.Handshake
+	var partner models.Partner
 
 	err := dr.db.QueryRow(sqlQuery, cnh, cnpj).Scan(
 		&partner.Record,
@@ -101,7 +101,7 @@ func (dr *DriverRepository) GetContracts(ctx context.Context, cnh *string) ([]mo
 
 }
 
-func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
+func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models.Partner) error {
 
 	sqlQuery := `INSERT INTO partners (name_driver, cnh_driver, email_driver, name_school, cnpj_school, email_school) VALUES ($1, $2, $3, $4, $5, $6)`
 
@@ -110,7 +110,7 @@ func (dr *DriverRepository) CreatePartner(ctx context.Context, handshake *models
 	return err
 }
 
-func (dr *DriverRepository) GetPartners(ctx context.Context, cnh *string) ([]models.Handshake, error) {
+func (dr *DriverRepository) GetPartners(ctx context.Context, cnh *string) ([]models.Partner, error) {
 
 	sqlQuery := `SELECT record, name_school, cnpj_school, email_school, created_at FROM partners WHERE cnh_driver = $1`
 
@@ -120,10 +120,10 @@ func (dr *DriverRepository) GetPartners(ctx context.Context, cnh *string) ([]mod
 	}
 	defer rows.Close()
 
-	var partners []models.Handshake
+	var partners []models.Partner
 
 	for rows.Next() {
-		var partner models.Handshake
+		var partner models.Partner
 
 		err := rows.Scan(
 			&partner.Record,

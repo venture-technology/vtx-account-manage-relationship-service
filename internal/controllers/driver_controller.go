@@ -40,7 +40,7 @@ func (ct *DriverController) Ping(c *gin.Context) {
 
 func (ct *DriverController) CreatePartner(c *gin.Context) {
 
-	var input models.Handshake
+	var input models.Partner
 
 	if err := c.BindJSON(&input); err != nil {
 		log.Printf("error to parsed body: %s", err.Error())

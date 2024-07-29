@@ -17,7 +17,7 @@ func NewDriverService(repo repository.IDriverRepository) *DriverService {
 	}
 }
 
-func (ds *DriverService) GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Handshake, error) {
+func (ds *DriverService) GetSchool(ctx context.Context, cnh, cnpj *string) (*models.Partner, error) {
 	return ds.driverrepository.GetSchool(ctx, cnh, cnpj)
 }
 
@@ -25,11 +25,11 @@ func (ds *DriverService) GetContracts(ctx context.Context, cnh *string) ([]model
 	return ds.driverrepository.GetContracts(ctx, cnh)
 }
 
-func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Handshake) error {
+func (ds *DriverService) CreatePartner(ctx context.Context, handshake *models.Partner) error {
 	return ds.driverrepository.CreatePartner(ctx, handshake)
 }
 
-func (ds *DriverService) GetPartners(ctx context.Context, cnh *string) ([]models.Handshake, error) {
+func (ds *DriverService) GetPartners(ctx context.Context, cnh *string) ([]models.Partner, error) {
 	return ds.driverrepository.GetPartners(ctx, cnh)
 }
 

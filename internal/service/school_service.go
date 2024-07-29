@@ -17,7 +17,7 @@ func NewSchoolService(repo repository.ISchoolRepository) *SchoolService {
 	}
 }
 
-func (ss *SchoolService) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Handshake, error) {
+func (ss *SchoolService) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Partner, error) {
 	return ss.schoolrepository.GetAllDriversToSchool(ctx, cnpj)
 }
 

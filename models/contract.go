@@ -16,10 +16,3 @@ type Contract struct {
 	Amount    int64     `json:"amount"`
 	Months    int64     `json:"months"`
 }
-
-type Handshake struct {
-	Record    int       `json:"record"`
-	Driver    Driver    `json:"driver"`
-	School    School    `json:"school"`
-	CreatedAt time.Time `json:"created_at"`
-}
