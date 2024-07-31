@@ -5,9 +5,10 @@ type Responsible struct {
 	Email      string `json:"email"`
 	CPF        string `json:"cpf"`
 	Street     string `json:"street"`
-	Number     int    `json:"int"`
+	Number     string `json:"number"`
 	Complement string `json:"complement"`
 	ZIP        string `json:"zip"`
+	CustomerId string `json:"customer_id"`
 }
 
 type Child struct {

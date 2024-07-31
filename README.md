@@ -11,11 +11,11 @@ responsible
 
 driver
 	/get/schools
-	/get/sponsors
+	/get/contracts
 
 school
 	/get/drivers
-	/get/sponsors
+	/get/contracts
 	
 account-manager
  

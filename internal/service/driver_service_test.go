@@ -58,7 +58,7 @@ func TestCreatePartner(t *testing.T) {
 	driverMock := mockDriver()
 	schoolMock := mockSchool()
 
-	partner := models.Handshake{
+	partner := models.Partner{
 		Driver: *driverMock,
 		School: *schoolMock,
 	}

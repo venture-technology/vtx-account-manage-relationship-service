@@ -17,12 +17,12 @@ func NewSchoolService(repo repository.ISchoolRepository) *SchoolService {
 	}
 }
 
-func (ss *SchoolService) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Handshake, error) {
+func (ss *SchoolService) GetAllDriversToSchool(ctx context.Context, cnpj *string) ([]models.Partner, error) {
 	return ss.schoolrepository.GetAllDriversToSchool(ctx, cnpj)
 }
 
-func (ss *SchoolService) GetSponsors(ctx context.Context, cnpj *string) ([]models.Sponsor, error) {
-	return ss.schoolrepository.GetSponsors(ctx, cnpj)
+func (ss *SchoolService) GetContracts(ctx context.Context, cnpj *string) ([]models.Contract, error) {
+	return ss.schoolrepository.GetContracts(ctx, cnpj)
 }
 
 func (ss *SchoolService) DeletePartner(ctx context.Context, cnpj, cnh *string) error {
