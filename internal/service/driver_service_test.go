@@ -100,10 +100,10 @@ func TestDriverGetSchool(t *testing.T) {
 
 }
 
-func TestDriverGetSponsor(t *testing.T) {
+func TestDriverGetContract(t *testing.T) {
 	log.Print("yet not implemented")
 }
 
-func TestDriverGetSponsorByShift(t *testing.T) {
+func TestDriverGetContractByShift(t *testing.T) {
 	log.Print("yet not implemented")
 }

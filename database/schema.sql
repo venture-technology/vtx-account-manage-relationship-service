@@ -28,9 +28,10 @@ CREATE TABLE IF NOT EXISTS contracts (
     email_driver VARCHAR(100) NOT NULL,
     street_driver TEXT NOT NULL,
     number_driver TEXT NOT NULL,
+
     zip_driver TEXT NOT NULL,
     cpf_responsible VARCHAR(11) NOT NULL,
-    custom_id_responsible TEXT NOT NULL,
+    customer_id_responsible TEXT NOT NULL,
     name_responsible VARCHAR(100) NOT NULL,
     email_responsible VARCHAR(100) NOT NULL,
     street_responsible TEXT NOT NULL,
