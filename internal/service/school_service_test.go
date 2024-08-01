@@ -56,7 +56,7 @@ func TestSchoolGetAllDriversToSchool(t *testing.T) {
 
 }
 
-func TestSchoolGetSponsor(t *testing.T) {
+func TestSchoolGetContract(t *testing.T) {
 	log.Print("yet not implemented")
 }
 
