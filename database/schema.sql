@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS partners (
 
 -- Tabela de account-manager
 CREATE TABLE IF NOT EXISTS contracts (
-    record SERIAL PRIMARY KEY,
+    record UUID PRIMARY KEY,
     title_stripe_subscription TEXT NOT NULL,
     description_stripe_subscription TEXT NOT NULL,
     id_stripe_subscription TEXT NOT NULL,
