@@ -41,3 +41,8 @@ type InvoiceRemaining struct {
 	Remaining    float64 `json:"invoice_remaining"`
 	Fines        float64 `json:"invoice_fine"`
 }
+
+type SubscriptionInfo struct {
+	ID     string `json:"subscription_id"`
+	Status string `json:"subscription_status"`
+}

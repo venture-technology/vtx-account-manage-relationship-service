@@ -151,15 +151,70 @@ func (rs *ResponsibleService) CreateSubscription(contract *models.Contract) (*st
 
 }
 
-func (rs *ResponsibleService) ListSubscriptions() {}
+func (rs *ResponsibleService) ListSubscriptions(contract *models.Contract) ([]models.SubscriptionInfo, error) {
 
-func (rs *ResponsibleService) GetSubscription() {}
+	conf := config.Get()
 
-func (rs *ResponsibleService) UpdateSubscription() {}
+	stripe.Key = conf.StripeEnv.SecretKey
 
-func (rs *ResponsibleService) DeleteSubscription() {}
+	params := &stripe.SubscriptionListParams{
+		Customer: stripe.String(contract.Child.Responsible.CustomerId),
+	}
+	params.Filters.AddFilter("limit", "", "10")
 
-func (rs *ResponsibleService) GetInvoice() {}
+	var subscriptions []models.SubscriptionInfo
+
+	i := subscription.List(params)
+
+	for i.Next() {
+		s := i.Subscription()
+		subscriptions = append(subscriptions, models.SubscriptionInfo{
+			ID:     s.ID,
+			Status: string(s.Status),
+		})
+	}
+
+	if err := i.Err(); err != nil {
+		return nil, err
+	}
+
+	return subscriptions, nil
+
+}
+
+func (rs *ResponsibleService) GetSubscription(subscriptionId string) (*stripe.Subscription, error) {
+
+	subscription, err := subscription.Get(subscriptionId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return subscription, nil
+
+}
+
+func (rs *ResponsibleService) DeleteSubscription(contract *models.Contract) (*stripe.Subscription, error) {
+
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
+
+	deletedSub, err := subscription.Cancel(contract.StripeSubscription.SubscriptionId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return deletedSub, nil
+
+}
+
+func (rs *ResponsibleService) GetInvoice(invoiceId string) (*stripe.Invoice, error) {
+
+	inv, err := invoice.Get(invoiceId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return inv, nil
+
+}
 
 func (rs *ResponsibleService) ListInvoices(contract *models.Contract) ([]models.InvoiceInfo, error) {
 
