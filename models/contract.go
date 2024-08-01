@@ -12,10 +12,12 @@ type StripeSubscription struct {
 	PriceSubscriptionId   string `json:"price_id"`
 	ProductSubscriptionId string `json:"product_id"`
 }
+
 type Contract struct {
 	Record             uuid.UUID          `json:"record"`
 	Status             string             `json:"status" validate:"oneof=CURRENTLY CANCELED EXPIRED"`
 	BackUrl            string             `json:"back_url"`
+	Description        string             `json:"description"`
 	Driver             Driver             `json:"driver"`
 	School             School             `json:"school"`
 	Child              Child              `json:"child"`
@@ -24,4 +26,18 @@ type Contract struct {
 	ExpireAt           time.Time          `json:"expire_at"`
 	Amount             int64              `json:"amount"`
 	Months             int64              `json:"months"`
+}
+
+type InvoiceInfo struct {
+	ID              string `json:"invoice_info_id"`
+	Status          string `json:"invoice_info_status"`
+	AmountDue       int64  `json:"invoice_info_amount_due"`
+	AmountRemaining int64  `json:"invoice_info_amount_remaining"`
+}
+
+type InvoiceRemaining struct {
+	InvoiceValue float64 `json:"invoice_value"`
+	Quantity     float64 `json:"invoice_quantity"`
+	Remaining    float64 `json:"invoice_remaining"`
+	Fines        float64 `json:"invoice_fine"`
 }
