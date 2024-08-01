@@ -11,7 +11,7 @@ type IResponsibleRepository interface {
 	FindAllDriverAtSchool(ctx context.Context, cnpj *string) ([]models.Driver, error)
 	CreateContract(ctx context.Context, contract *models.Contract) error
 	GetPartners(ctx context.Context, cpf *string) ([]models.Contract, error)
-	BreachContract(ctx context.Context, record *int) error
+	DeleteContract(ctx context.Context, record *int) error
 }
 
 type ResponsibleRepository struct {
@@ -174,7 +174,7 @@ func (rr *ResponsibleRepository) FindAllDriverAtSchool(ctx context.Context, cnpj
 
 }
 
-func (rr *ResponsibleRepository) BreachContract(ctx context.Context, record *int) error {
+func (rr *ResponsibleRepository) DeleteContract(ctx context.Context, record *int) error {
 
 	tx, err := rr.db.Begin()
 	if err != nil {

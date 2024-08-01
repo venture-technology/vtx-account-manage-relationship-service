@@ -29,6 +29,6 @@ func (rs *ResponsibleService) FindAllDriverAtSchool(ctx context.Context, cnpj *s
 	return rs.responsiblerepository.FindAllDriverAtSchool(ctx, cnpj)
 }
 
-func (rs *ResponsibleService) BreachContract(ctx context.Context, record *int) error {
-	return rs.responsiblerepository.BreachContract(ctx, record)
+func (rs *ResponsibleService) DeleteContract(ctx context.Context, record *int) error {
+	return rs.responsiblerepository.DeleteContract(ctx, record)
 }

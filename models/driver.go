@@ -8,5 +8,5 @@ type Driver struct {
 	Number     string  `json:"number"`
 	Complement string  `json:"complement"`
 	ZIP        string  `json:"zip"`
-	Amount     float64 `json:"amount"`
+	Price      float64 `json:"price"`
 }
