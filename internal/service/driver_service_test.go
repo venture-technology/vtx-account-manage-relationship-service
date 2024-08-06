@@ -23,9 +23,14 @@ func newPostgres(dbConfig config.Database) string {
 
 func mockDriver() *models.Driver {
 	return &models.Driver{
-		Name:  "João Silva",
-		Email: "gustavorodrigueslima2004@gmail.com",
-		CNH:   "26779665567",
+		Name:       "João Silva",
+		Email:      "gustavorodrigueslima2004@gmail.com",
+		CNH:        "26779665567",
+		Street:     "Rua Tiburcio de Souza",
+		Number:     "2782",
+		Complement: "",
+		ZIP:        "",
+		Price:      100,
 	}
 }
 

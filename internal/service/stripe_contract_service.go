@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/stripe/stripe-go/v79"
 	"github.com/stripe/stripe-go/v79/invoice"
 	"github.com/stripe/stripe-go/v79/paymentintent"
@@ -107,7 +109,7 @@ func (rs *ResponsibleService) CreatePrice(contract *models.Contract) (*stripe.Pr
 	stripe.Key = conf.StripeEnv.SecretKey
 
 	params := &stripe.PriceParams{
-		Currency: stripe.String(string(stripe.CurrencyBRL)),
+		Currency: stripe.String(string("brl")),
 		Product:  stripe.String(contract.StripeSubscription.ProductSubscriptionId),
 		Recurring: &stripe.PriceRecurringParams{
 			Interval: stripe.String("month"),
@@ -151,15 +153,82 @@ func (rs *ResponsibleService) CreateSubscription(contract *models.Contract) (*st
 
 }
 
-func (rs *ResponsibleService) ListSubscriptions() {}
+func (rs *ResponsibleService) ListSubscriptions(contract *models.Contract) ([]models.SubscriptionInfo, error) {
 
-func (rs *ResponsibleService) GetSubscription() {}
+	conf := config.Get()
 
-func (rs *ResponsibleService) UpdateSubscription() {}
+	stripe.Key = conf.StripeEnv.SecretKey
 
-func (rs *ResponsibleService) DeleteSubscription() {}
+	params := &stripe.SubscriptionListParams{
+		Customer: stripe.String(contract.Child.Responsible.CustomerId),
+	}
+	params.Filters.AddFilter("limit", "", "10")
 
-func (rs *ResponsibleService) GetInvoice() {}
+	var subscriptions []models.SubscriptionInfo
+
+	i := subscription.List(params)
+
+	for i.Next() {
+		s := i.Subscription()
+		subscriptions = append(subscriptions, models.SubscriptionInfo{
+			ID:     s.ID,
+			Status: string(s.Status),
+		})
+	}
+
+	if err := i.Err(); err != nil {
+		return nil, err
+	}
+
+	return subscriptions, nil
+
+}
+
+func (rs *ResponsibleService) GetSubscription(subscriptionId string) (*stripe.Subscription, error) {
+
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
+
+	subscription, err := subscription.Get(subscriptionId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return subscription, nil
+
+}
+
+func (rs *ResponsibleService) DeleteSubscription(contract *models.Contract) (*stripe.Subscription, error) {
+
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
+
+	deletedSub, err := subscription.Cancel(contract.StripeSubscription.SubscriptionId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return deletedSub, nil
+
+}
+
+func (rs *ResponsibleService) ExpireContract(ctx context.Context, record uuid.UUID) error {
+	return rs.responsiblerepository.ExpireContract(ctx, record)
+}
+
+func (rs *ResponsibleService) GetInvoice(invoiceId string) (*stripe.Invoice, error) {
+
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
+
+	inv, err := invoice.Get(invoiceId, nil)
+	if err != nil {
+		return nil, err
+	}
+	return inv, nil
+
+}
 
 func (rs *ResponsibleService) ListInvoices(contract *models.Contract) ([]models.InvoiceInfo, error) {
 
@@ -210,7 +279,7 @@ func (rs *ResponsibleService) CalculateRemainingValueSubscription(invoices []mod
 
 }
 
-func (rs *ResponsibleService) FineResponsible(contract *models.Contract) (*stripe.PaymentIntent, error) {
+func (rs *ResponsibleService) FineResponsible(contract *models.Contract, amountFine int64) (*stripe.PaymentIntent, error) {
 
 	conf := config.Get()
 
@@ -218,7 +287,7 @@ func (rs *ResponsibleService) FineResponsible(contract *models.Contract) (*strip
 
 	params := &stripe.PaymentIntentParams{
 		Customer:      stripe.String(contract.Child.Responsible.CustomerId),
-		Amount:        stripe.Int64(contract.Amount * 100),
+		Amount:        stripe.Int64(amountFine * 100),
 		Currency:      stripe.String("brl"),
 		PaymentMethod: stripe.String(contract.Child.Responsible.PaymentMethodId),
 		OffSession:    stripe.Bool(true),

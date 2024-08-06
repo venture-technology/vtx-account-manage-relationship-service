@@ -7,9 +7,10 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/venture-technology/vtx-account-manager/config"
 	"github.com/venture-technology/vtx-account-manager/internal/repository"
+	"github.com/venture-technology/vtx-account-manager/models"
 )
 
-func setupTestDb(t *testing.T) (*sql.DB, *ResponsibleService) {
+func setupResponsibleTestDb(t *testing.T) (*sql.DB, *ResponsibleService) {
 	t.Helper()
 
 	config, err := config.Load("../../config/config.yaml")
@@ -28,15 +29,20 @@ func setupTestDb(t *testing.T) (*sql.DB, *ResponsibleService) {
 	return db, responsibleService
 }
 
-// func TestCalculateValueSubscription(t *testing.T) {
-// 	db, responsibleService := setupTestDb(t)
-// 	defer db.Close()
-
-// 	dist, err := responsibleService.getDistance(context.Background(), "Avenida Itamerendiba, 30, 08120520", "Avenida Barão de Alagoas, 223, 08120000")
-
-// 	if err != nil {
-// 		t.Errorf(err.Error())
-// 	}
-
-// 	log.Print("dist", dist)
-// }
+func mockChild() *models.Child {
+	return &models.Child{
+		Name: "Kauã Barbosa do Nascimento",
+		RG:   "552381147",
+		Responsible: models.Responsible{
+			Name:            "Gesse Souza Lima",
+			Email:           "gustavorodrigueslima2004@gmail.com",
+			CPF:             "22321279826",
+			Street:          "Rua Tiburcio de Souza",
+			Number:          "2782",
+			Complement:      "",
+			ZIP:             "08140000",
+			CustomerId:      "cus_QXeuluwEfuvSnt",
+			PaymentMethodId: "pm_1PgZbILfFDLpePGLIZ5AOoIr",
+		},
+	}
+}

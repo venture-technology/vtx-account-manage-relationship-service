@@ -6,6 +6,6 @@ type School struct {
 	CNPJ       string `json:"cnpj"`
 	Street     string `json:"street"`
 	Number     string `json:"number"`
-	Complement string `json:"complement"`
+	Complement string `json:"complement,omitempty"`
 	ZIP        string `json:"zip"`
 }

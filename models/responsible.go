@@ -6,10 +6,10 @@ type Responsible struct {
 	CPF             string `json:"cpf"`
 	Street          string `json:"street"`
 	Number          string `json:"number"`
-	Complement      string `json:"complement"`
+	Complement      string `json:"complement,omitempty"`
 	ZIP             string `json:"zip"`
-	CustomerId      string `json:"customer_id"`
-	PaymentMethodId string `json:"payment_method_id"`
+	CustomerId      string `json:"customer_id,omitempty"`
+	PaymentMethodId string `json:"payment_method_id,omitempty"`
 }
 
 type Child struct {

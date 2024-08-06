@@ -13,9 +13,13 @@ import (
 
 func mockSchool() *models.School {
 	return &models.School{
-		Name:  "E.M.E.F Professor Carlos Pasquale",
-		Email: "gustavorodrigueslima2004@gmail.com",
-		CNPJ:  "64025893000102",
+		Name:       "E.M.E.F Professor Carlos Pasquale",
+		Email:      "gustavorodrigueslima2004@gmail.com",
+		CNPJ:       "64025893000102",
+		Street:     "Avenida Barao de Alagoas",
+		Number:     "223",
+		Complement: "",
+		ZIP:        "08120000",
 	}
 }
 

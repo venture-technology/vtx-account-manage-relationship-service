@@ -27,7 +27,7 @@ messaging:
 
 google-cloud-secret:
   apikey: "your-api-key"
-  endpoint: "https://maps.googleapis.com/maps/api/distancematrix/json"
+  endpoint-matrix-distance: "https://maps.googleapis.com/maps/api/distancematrix/json"
 
 stripe-env:
   public-key: "your-public-key"
