@@ -1,6 +1,7 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/stripe/stripe-go/v79"
 	"github.com/stripe/stripe-go/v79/invoice"
 	"github.com/stripe/stripe-go/v79/paymentintent"
@@ -107,7 +109,7 @@ func (rs *ResponsibleService) CreatePrice(contract *models.Contract) (*stripe.Pr
 	stripe.Key = conf.StripeEnv.SecretKey
 
 	params := &stripe.PriceParams{
-		Currency: stripe.String(string(stripe.CurrencyBRL)),
+		Currency: stripe.String(string("brl")),
 		Product:  stripe.String(contract.StripeSubscription.ProductSubscriptionId),
 		Recurring: &stripe.PriceRecurringParams{
 			Interval: stripe.String("month"),
@@ -184,6 +186,10 @@ func (rs *ResponsibleService) ListSubscriptions(contract *models.Contract) ([]mo
 
 func (rs *ResponsibleService) GetSubscription(subscriptionId string) (*stripe.Subscription, error) {
 
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
+
 	subscription, err := subscription.Get(subscriptionId, nil)
 	if err != nil {
 		return nil, err
@@ -206,7 +212,15 @@ func (rs *ResponsibleService) DeleteSubscription(contract *models.Contract) (*st
 
 }
 
+func (rs *ResponsibleService) ExpireContract(ctx context.Context, record uuid.UUID) error {
+	return rs.responsiblerepository.ExpireContract(ctx, record)
+}
+
 func (rs *ResponsibleService) GetInvoice(invoiceId string) (*stripe.Invoice, error) {
+
+	conf := config.Get()
+
+	stripe.Key = conf.StripeEnv.SecretKey
 
 	inv, err := invoice.Get(invoiceId, nil)
 	if err != nil {
@@ -265,7 +279,7 @@ func (rs *ResponsibleService) CalculateRemainingValueSubscription(invoices []mod
 
 }
 
-func (rs *ResponsibleService) FineResponsible(contract *models.Contract) (*stripe.PaymentIntent, error) {
+func (rs *ResponsibleService) FineResponsible(contract *models.Contract, amountFine int64) (*stripe.PaymentIntent, error) {
 
 	conf := config.Get()
 
@@ -273,7 +287,7 @@ func (rs *ResponsibleService) FineResponsible(contract *models.Contract) (*strip
 
 	params := &stripe.PaymentIntentParams{
 		Customer:      stripe.String(contract.Child.Responsible.CustomerId),
-		Amount:        stripe.Int64(contract.Amount * 100),
+		Amount:        stripe.Int64(amountFine * 100),
 		Currency:      stripe.String("brl"),
 		PaymentMethod: stripe.String(contract.Child.Responsible.PaymentMethodId),
 		OffSession:    stripe.Bool(true),
