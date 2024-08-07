@@ -3,9 +3,9 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/venture-technology/vtx-account-manager/internal/server"
 	"github.com/venture-technology/vtx-account-manager/internal/service"
 	"github.com/venture-technology/vtx-account-manager/models"
@@ -24,10 +24,15 @@ func NewResponsibleController(responsibleservice *service.ResponsibleService) *R
 func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 	api := router.Group("vtx-account-manager/api/v1/responsible")
 
-	api.GET("/school/:cnpj/driver", ct.SearchDriversInSchool) // para encontrar motoristas da escola
-	api.POST("/contract", ct.CreateContract)                  // para fechar um contrato com o motorista e escola
-	api.GET("/contract/:cpf", ct.GetPartners)                 // para visualizar todos os motoristas
-	api.DELETE("/contract/:record", ct.BreachContract)        // para quebrar um contrato com o motorista e escola
+	api.GET("/find/:school/driver", ct.SearchDriversInSchool)       // para encontrar motoristas da escola
+	api.POST("/contract", ct.CreateContract)                        // para criar um contrato
+	api.GET("/contract/:cpf", ct.GetContractByCpf)                  // para verificar todos os contratos
+	api.GET("/contract/:record", ct.GetContract)                    // para verificar um contrato em especifico
+	api.GET("/contract/:record/invoice", ct.GetInvoiceFromContract) // para verificar todas as faturas daquele contrato
+	api.GET("/contract/:record/invoice/:id", ct.GetInvoice)         // para verificar uma fatura de um contrato especifico
+	api.PATCH("/contract/:record", ct.UpdateContract)               // para atualizar o metodo de pagamento de um contrato
+	api.PATCH("/contract/webhook/expired", ct.ExpireContract)       // para atualizar e setar contrato como cancelado (vistado apenas por webhooks da stripe)
+	api.DELETE("/contract/:record", ct.DeleteContract)              // para quebrar um contrato com o motorista e escola
 }
 
 func (ct *ResponsibleController) CreateContract(c *gin.Context) {
@@ -52,27 +57,43 @@ func (ct *ResponsibleController) CreateContract(c *gin.Context) {
 
 }
 
-func (ct *ResponsibleController) GetPartners(c *gin.Context) {
+func (ct *ResponsibleController) GetContractByCpf(c *gin.Context) {
 
-	cpf := c.Param("cpf")
+}
 
-	partners, err := ct.responsibleservice.GetPartners(c, &cpf)
+func (ct *ResponsibleController) GetContract(c *gin.Context) {
+
+}
+
+func (ct *ResponsibleController) GetInvoiceFromContract(c *gin.Context) {
+
+}
+
+func (ct *ResponsibleController) GetInvoice(c *gin.Context) {
+
+}
+
+func (ct *ResponsibleController) UpdateContract(c *gin.Context) {
+
+}
+
+func (ct *ResponsibleController) ExpireContract(c *gin.Context) {
+
+}
+
+func (ct *ResponsibleController) DeleteContract(c *gin.Context) {
+
+	recordStr := c.Param("record")
+
+	record, err := uuid.Parse(recordStr)
 
 	if err != nil {
-		log.Printf("error to find partners: %s", err.Error())
+		log.Printf("error to convert uuid: %s", err.Error())
 		c.JSON(http.StatusBadRequest, server.InternalServerErrorResponse(err))
 		return
 	}
 
-	c.JSON(http.StatusOK, partners)
-
-}
-
-func (ct *ResponsibleController) BreachContract(c *gin.Context) {
-
-	record, _ := strconv.Atoi(c.Param("record"))
-
-	err := ct.responsibleservice.BreachContract(c, &record)
+	err = ct.responsibleservice.DeleteContract(c, record)
 
 	if err != nil {
 		log.Printf("error to breach contract: %s", err.Error())
