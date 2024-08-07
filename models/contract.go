@@ -15,8 +15,7 @@ type StripeSubscription struct {
 
 type Contract struct {
 	Record             uuid.UUID          `json:"record"`
-	Status             string             `json:"status" validate:"oneof=CURRENTLY CANCELED EXPIRED"`
-	BackUrl            string             `json:"back_url"`
+	Status             string             `json:"status" validate:"oneof=currently canceled expired"`
 	Description        string             `json:"description"`
 	Driver             Driver             `json:"driver"`
 	School             School             `json:"school"`
