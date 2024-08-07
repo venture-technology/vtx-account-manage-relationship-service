@@ -30,7 +30,7 @@ func (ct *ResponsibleController) RegisterRoutes(router *gin.Engine) {
 	api.GET("/contract/:record/invoice", ct.GetInvoiceFromContract) // para verificar todas as faturas daquele contrato
 	api.GET("/contract/:record/invoice/:id", ct.GetInvoice)         // para verificar uma fatura de um contrato especifico
 	api.PATCH("/contract/:record", ct.UpdateContract)               // para atualizar o metodo de pagamento de um contrato
-	api.PATCH("/contract/webhook/expired", ct.UpdateStatusContract) // para atualizar e setar contrato como cancelado (vistado apenas por webhooks da stripe)
+	api.PATCH("/contract/status", ct.UpdateStatusContract)          // para atualizar e setar contrato como cancelado (vistado apenas por webhooks da stripe)
 }
 
 func (ct *ResponsibleController) CreateContract(c *gin.Context) {
