@@ -212,8 +212,8 @@ func (rs *ResponsibleService) DeleteSubscription(contract *models.Contract) (*st
 
 }
 
-func (rs *ResponsibleService) ExpireContract(ctx context.Context, record uuid.UUID) error {
-	return rs.responsiblerepository.ExpireContract(ctx, record)
+func (rs *ResponsibleService) UpdateStatusContract(ctx context.Context, record uuid.UUID, status string) error {
+	return rs.responsiblerepository.UpdateStatusContract(ctx, record, status)
 }
 
 func (rs *ResponsibleService) GetInvoice(invoiceId string) (*stripe.Invoice, error) {

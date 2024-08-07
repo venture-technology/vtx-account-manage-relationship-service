@@ -12,8 +12,7 @@ type IResponsibleRepository interface {
 	FindAllDriverAtSchool(ctx context.Context, cnpj *string) ([]models.Driver, error)
 	CreateContract(ctx context.Context, contract *models.Contract) error
 	FindContractsByCpf(ctx context.Context, cpf, status *string) ([]models.Contract, error)
-	DeleteContract(ctx context.Context, record uuid.UUID) error
-	ExpireContract(ctx context.Context, record uuid.UUID) error
+	UpdateStatusContract(ctx context.Context, record uuid.UUID, status string) error
 }
 
 type ResponsibleRepository struct {
@@ -235,31 +234,10 @@ func (rr *ResponsibleRepository) FindAllDriverAtSchool(ctx context.Context, cnpj
 
 }
 
-func (rr *ResponsibleRepository) DeleteContract(ctx context.Context, record uuid.UUID) error {
-
-	tx, err := rr.db.Begin()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if p := recover(); p != nil {
-			_ = tx.Rollback()
-			panic(p)
-		} else if err != nil {
-			_ = tx.Rollback()
-		} else {
-			err = tx.Commit()
-		}
-	}()
-	_, err = tx.Exec("DELETE FROM contracts WHERE record = $1", record)
-	return err
-
-}
-
-func (rr *ResponsibleRepository) ExpireContract(ctx context.Context, record uuid.UUID) error {
+func (rr *ResponsibleRepository) UpdateStatusContract(ctx context.Context, record uuid.UUID, status string) error {
 
 	sqlQuery := `UPDATE contracts SET status = $1 WHERE record = $2`
-	_, err := rr.db.ExecContext(ctx, sqlQuery, "expired")
+	_, err := rr.db.ExecContext(ctx, sqlQuery, status)
 	return err
 
 }
