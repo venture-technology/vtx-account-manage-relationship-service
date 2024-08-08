@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"github.com/venture-technology/vtx-account-manager/internal/repository"
 	"github.com/venture-technology/vtx-account-manager/models"
 )
@@ -19,6 +18,17 @@ func NewResponsibleService(repo repository.IResponsibleRepository) *ResponsibleS
 }
 
 func (rs *ResponsibleService) CreateContract(ctx context.Context, contract *models.Contract) error {
+
+	// validar distancia
+
+	// calcular valor de contrato
+
+	// criar produto
+
+	// criar preço
+
+	// crio inscrição
+
 	return rs.responsiblerepository.CreateContract(ctx, contract)
 }
 
@@ -26,10 +36,10 @@ func (rs *ResponsibleService) FindContractsByCpf(ctx context.Context, cpf, statu
 	return rs.responsiblerepository.FindContractsByCpf(ctx, cpf, status)
 }
 
+func (rs *ResponsibleService) GetContract() {}
+
+func (rs *ResponsibleService) UpdateContract() {}
+
 func (rs *ResponsibleService) FindAllDriverAtSchool(ctx context.Context, cnpj *string) ([]models.Driver, error) {
 	return rs.responsiblerepository.FindAllDriverAtSchool(ctx, cnpj)
-}
-
-func (rs *ResponsibleService) DeleteContract(ctx context.Context, record uuid.UUID) error {
-	return rs.responsiblerepository.DeleteContract(ctx, record)
 }

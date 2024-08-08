@@ -1,28 +1,14 @@
-	/get/schools -> ms de escola
-responsible
+| todo 
 
-	/delete/child/school/driver (pra cancelar com o motorista)
-	/get/school/driver 
-	/get/school/driver -> vai bater no ms de motorista
-	/post/school/driver (pra criar uma matricula)
+- [x] configurar retornos de repository
+    - [x] remover back_url dos models
 
-driver
-	/get/schools
-	/get/contracts
+- [ ] configurar controllers que chamam service e repositorys
+    - [ ] criar service geral que chama todas as functions de service.
+    - [ ] os contratos nao podem ser excluidos no repository deve apenas ter seu status movido para cancelado
 
-school
-	/get/drivers
-	/get/contracts
-	
-account-manager
- 
-	/get/school?driver=x (validar se a escola tem relação com esse driver)
-	/get/driver?school=x	
-	
-banco 
-	school-drivers
-	record | escola | email | cnpj | driver | email | cnh
-	
-	account-manager
-	record | escola | email | cnpj | driver | email | cnh | responsible | email | cpf | child | rg  
-	
+- [ ] configurar webhook apos expirar contrato
+
+low priority
+- [ ] arrumar querys do lado de driver
+- [ ] arrumar querys do lado de escola
